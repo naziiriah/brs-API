@@ -1,0 +1,36 @@
+{
+  "name": "brs-api",
+  "version": "1.0.0",
+  "description": "Server application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "server": " nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naziiriah/brs-API.git"
+  },
+  "keywords": [
+    "12345"
+  ],
+  "author": "Nazir Abubakar",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "bugs": {
+    "url": "https://github.com/naziiriah/brs-API/issues"
+  },
+  "homepage": "https://github.com/naziiriah/brs-API#readme"
+}
