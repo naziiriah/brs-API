@@ -1,21 +1,31 @@
 const Books = require('../model/bookModel')
 const asyncHandler = require('express-async-handler')
 
-const getBook = (req, res) => {
+const getBook = asyncHandler( async (req, res) => {
+    const books  = await Books.find({
+        user:req.user.id
+    })
+    res.status(200).json(books)
+})
+
+const createBook = asyncHandler( async(req, res) => {
+    const books  = await Books.find({
+        user:req.user.id
+    })
     
     res.status(200).json({
-        message:"get books"
+        message:"create books"
+    })
+})
+const updateBook =( req, res) => {
+    res.status(200).json({
+        message:"update books"
     })
 }
-
-const createBook = (req, res) => {
-
-}
-const updateBook =( req, res) => {
-
-}
 const deleteBook = (req, res) => {
-
+    res.status(200).json({
+        message:"delete books"
+    })
 }
 
 module.exports = {
