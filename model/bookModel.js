@@ -13,10 +13,15 @@ const bookSchema = mongoose.Schema({
     ISBN: {
         type:String,
         required:true,
+        unique:true
     },
     title :{
         type:String,
         required:true,
+        unique:true
+    },
+    image :{
+        type:String,
     },
     available:{
         type:Boolean,

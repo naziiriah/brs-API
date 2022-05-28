@@ -15,7 +15,7 @@ app.use('/api', require('./route/bookRoutes'))
 app.use('/user', require('./route/userRoutes'))
 
 
-app.use(errorHandler)
+// app.use(errorHandler)
 
 app.listen(port, () => {
     console.log(`Server is running at port ${port}`)
