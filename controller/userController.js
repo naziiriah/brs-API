@@ -57,15 +57,13 @@ const loginUser = asyncHandler( async(req, res) =>{
             email:userExists.email,
             token: generateToken(userExists.id)
             })
-    }   
-    else{
+    }else{
         res.status(400)
         throw new Error('This User does not exist!!')
     }
-
-
 })
- 
+//  GET USER INFORMATION
+//  
 const userInfo = asyncHandler( async(req, res) => {
     const { _id, email, name} = await user.findById((req.user.id))
 

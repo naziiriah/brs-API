@@ -3,13 +3,16 @@ const user = require('../model/userModel')
 const asyncHandler = require('express-async-handler')
 
 
-// GET all Books
+// get all Books
+// GET /
+
 const getBook = asyncHandler( async (req, res) => {
     const books  = await Books.find()
-
     res.status(200).json(books)
 })
 
+// get books a specific user created
+// GET /mybooks
 const myBooks = asyncHandler(async (req, res) => {
     const books  = await Books.find({
         user:req.user.id
@@ -18,15 +21,15 @@ const myBooks = asyncHandler(async (req, res) => {
     res.status(200).json(books)
 })
 
+// create new book for rentals
+// POST /
 
-// POST
-// localhost/5000
 const createBook = asyncHandler( async(req, res) => {
     
-    const {title,ISBN,available ,author}  = req.body
+    const {title,ISBN,available ,author, image}  = req.body
     // const  image = req.file.originalname
     
-    if(! title || !ISBN || !available || !author ){
+    if(! title || !ISBN || !available || !author || !image ){
         res.status(400)
         throw new Error('Complete the form')
     }
@@ -55,7 +58,7 @@ const createBook = asyncHandler( async(req, res) => {
       author:author,
       ISBN:ISBN,
       title:title,
-    //   image:image,
+      image:image,
       available:Boolean(available),
       user: req.user.id
     })
@@ -63,7 +66,8 @@ const createBook = asyncHandler( async(req, res) => {
     res.status(200).json(newBook)
 })
 
-
+//  edit a books created by the user
+// PUT /:id
 const updateBook =asyncHandler( async( req, res) => {
     const book = await Books.findById((req.params.id))
 
@@ -89,6 +93,9 @@ const updateBook =asyncHandler( async( req, res) => {
 
     res.status(200).json(updatedBooks)
 })
+
+// delete a particular book by the user
+// DELETE /:id
 const deleteBook = asyncHandler( async (req, res) => {
 
     const books  = await Books.findById((req.params.id))
@@ -97,6 +104,8 @@ const deleteBook = asyncHandler( async (req, res) => {
         res.status(400)
         throw new Error('Book does not exist!!')
     }
+
+    
     const currentUser =await user.findById(req.user.id)
 
     if(!currentUser){
