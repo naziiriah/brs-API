@@ -74,6 +74,39 @@ const userInfo = asyncHandler( async(req, res) => {
     })
 })
 
+const updateUser  = asyncHandler(async(req, res) => {
+    const currentuser =  req.user
+
+   try{
+       await user.findByIdAndUpdate(currentuser.id,req.body, {
+        new:true})
+        res.status(200).json({
+            message: 'account updated'
+        })
+    }
+    catch(error){
+        res.status(403)
+        throw new Error("You can't edit this account")
+    }
+
+})
+
+const deleteUser = asyncHandler( async(req, res) => {
+    const currentUser = req.user
+
+    try{
+        await user.findByIdAndDelete(currentUser.id)
+         res.status(200).json({
+             message: 'account deleted'
+         })
+     }
+     catch(error){
+         res.status(403)
+         throw new Error("You can't deleted this account")
+     }
+
+})
+
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET , {
         expiresIn : '30d',
@@ -84,5 +117,7 @@ const generateToken = (id) => {
 module.exports = {
     createUser,
     loginUser,
-    userInfo
+    userInfo,
+    updateUser,
+    deleteUser
 }

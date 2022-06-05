@@ -13,7 +13,15 @@ const userSchema = mongoose.Schema({
     password: {
         type:String,
         required:true,
-    }
+    },
+    profilePicture: {
+        type:String,
+        default:''
+    },
+    isAdmin : {
+        type:Boolean,
+        default:false
+    }    
 },
 {
     timestamp:true,

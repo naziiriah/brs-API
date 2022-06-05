@@ -26,8 +26,8 @@ const myBooks = asyncHandler(async (req, res) => {
 
 const createBook = asyncHandler( async(req, res) => {
     
-    const {title,ISBN,available ,author, image}  = req.body
-    // const  image = req.file.originalname
+    const {title,ISBN,available ,author, }  = req.body
+    const  image = req.file.originalname
     
     if(! title || !ISBN || !available || !author || !image ){
         res.status(400)
