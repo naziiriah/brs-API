@@ -107,6 +107,20 @@ const deleteUser = asyncHandler( async(req, res) => {
 
 })
 
+const rentedList = asyncHandler( async (req, res) => {
+    const User = req.user
+    try{
+        await User.updateOne({$push:{rented : req.body}})
+        res.status(200).json({
+            message:'rent updated'
+        })
+     }
+     catch(error){
+         res.status(403)
+         throw new Error("You can't deleted this account")
+     }
+})
+
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET , {
         expiresIn : '30d',
@@ -119,5 +133,6 @@ module.exports = {
     loginUser,
     userInfo,
     updateUser,
-    deleteUser
+    deleteUser,
+    rentedList
 }

@@ -90,7 +90,6 @@ const updateBook =asyncHandler( async( req, res) => {
     const updatedBooks = await Books.findByIdAndUpdate(req.params.id, req.body, {
         new:true
     })
-
     res.status(200).json(updatedBooks)
 })
 
@@ -124,10 +123,36 @@ const deleteBook = asyncHandler( async (req, res) => {
     })
 })
 
+const updateRentedStatus = asyncHandler (async(req, res) => {
+    const books  = await Books.findById((req.params.id))
+
+    if(!books){
+        res.status(400)
+        throw new Error('Book does not exist!!')
+    }
+    
+    const User = req.user
+    
+        
+    const isRented = books.rented.filter(state => state.email === User.email)
+        if(isRented.length === 0){
+            await books.updateOne({$push:{rented : {email:User.email}}})
+            res.status(200).json({
+                message:'rent updated in book'
+            })
+            await User.updateOne({$push:{rented : books}})
+        }else{
+            res.status(400).json({
+                message:'You have already rented this book'
+            })
+        }
+})
+
 module.exports = {
     getBook,
     myBooks,
     createBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    updateRentedStatus
 }

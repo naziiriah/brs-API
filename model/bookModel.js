@@ -28,9 +28,9 @@ const bookSchema = mongoose.Schema({
         type:Number,
         required:true,
     },
-    available:{
-        type:Boolean,
-        required:true
+    rented: {
+        type:Array,
+        max:10     
     }
 },{
     timestamps:true,
