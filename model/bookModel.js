@@ -21,6 +21,7 @@ const bookSchema = mongoose.Schema({
         unique:true
     },
     image :{
+        data:Buffer,
         type:String,
         required:true,
     },

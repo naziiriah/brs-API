@@ -15,7 +15,7 @@ Router.route('/user').get(protect,userInfo)
 Router.route('/login').post(loginUser)
 Router.route('/update').put(protect, updateUser)
 Router.route('/delete').delete(protect, deleteUser)
-Router.route('/rented').put(protect, rentedList)
+
 
 
 module.exports = Router

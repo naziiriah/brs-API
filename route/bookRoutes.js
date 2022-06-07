@@ -12,8 +12,8 @@ const uploads = require('../storage/storage')
 const {protect} = require('../middleware/authMiddleware')
 
 
-Router.route('/').get(getBook).post(uploads.single('image'), protect, createBook)
-Router.route('/:id').put(uploads.single('image'), protect, updateBook).delete( protect, deleteBook)
+Router.route('/').get(getBook).post( protect, uploads,createBook)
+Router.route('/:id').put( protect, uploads,updateBook).delete( protect, deleteBook)
 Router.route('/mybooks').get(protect, myBooks)
 Router.route('/rent/:id').put(protect, updateRentedStatus)
 

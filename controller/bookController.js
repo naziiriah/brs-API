@@ -1,7 +1,7 @@
 const Books = require('../model/bookModel')
 const user = require('../model/userModel')
 const asyncHandler = require('express-async-handler')
-
+const uploads = require('../storage/storage')
 
 // get all Books
 // GET /
@@ -15,7 +15,7 @@ const getBook = asyncHandler( async (req, res) => {
 // GET /mybooks
 const myBooks = asyncHandler(async (req, res) => {
     const books  = await Books.find({
-        user:req.user.id
+        user:req.user
     })
 
     res.status(200).json(books)
@@ -26,10 +26,10 @@ const myBooks = asyncHandler(async (req, res) => {
 
 const createBook = asyncHandler( async(req, res) => {
     
-    const {title,ISBN,available ,author, }  = req.body
-    const  image = req.file.originalname
+    const {title,ISBN,price,author, }  = req.body
+    const image = req.file.filename
     
-    if(! title || !ISBN || !available || !author || !image ){
+    if(!title || !ISBN || !author || !image ||!price ){
         res.status(400)
         throw new Error('Complete the form')
     }
@@ -43,24 +43,26 @@ const createBook = asyncHandler( async(req, res) => {
 
     if(isBookExist ){
         res.status(400).json({
-            message:"this books exist already" 
+                message:"this books exist already" 
+          
         })
     }
 
     if(isISBNExist){
         res.status(400).json({
-            message:"this ISBN code have been used" 
+                message:"this ISBN code have been used" 
         })
     }
 
 
     const newBook = await Books.create({
       author:author,
+      price:price,
       ISBN:ISBN,
       title:title,
       image:image,
-      available:Boolean(available),
-      user: req.user.id
+      user: req.user.id,
+      
     })
     
     res.status(200).json(newBook)
@@ -75,14 +77,10 @@ const updateBook =asyncHandler( async( req, res) => {
         res.status(400)
         throw new Error('Book not found')
     }
-    const currentUser =await user.findById(req.user.id)
+    const currentUser = req.user
 
-    if(!currentUser){
-        res.status(401)
-        throw new Error ('user not found')
-    }
 
-    if(book.user.toString() !== currentUser.id){
+    if(book.user.toString() !== currentUser){
         res.status(401)
         throw new Error('user not authorised') 
     }
@@ -105,12 +103,7 @@ const deleteBook = asyncHandler( async (req, res) => {
     }
 
     
-    const currentUser =await user.findById(req.user.id)
-
-    if(!currentUser){
-        res.status(401)
-        throw new Error ('user not found')
-    }
+    const currentUser = req.user
 
     if(books.user.toString() !== currentUser.id){
         res.status(401)

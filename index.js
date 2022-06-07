@@ -6,7 +6,7 @@ const connectDB = require('./config/db')
 const app = express()
 const port = process.env.PORT || 6000
 const color = require('colors')
-
+const multer = require('multer')
 connectDB()
 app.use(express.json())
 app.use(urlencoded({extended:false}))
