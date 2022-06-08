@@ -55,6 +55,8 @@ const loginUser = asyncHandler( async(req, res) =>{
             _id:userExists.id,
             name: userExists.name,
             email:userExists.email,
+            rented:userExists.rented,
+            profilePic:userExists.profilePicture,
             token: generateToken(userExists.id)
             })
     }else{

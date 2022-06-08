@@ -128,17 +128,18 @@ const updateRentedStatus = asyncHandler (async(req, res) => {
     
         
     const isRented = books.rented.filter(state => state.email === User.email)
-        if(isRented.length === 0){
-            await books.updateOne({$push:{rented : {email:User.email}}})
-            res.status(200).json({
-                message:'rent updated in book'
-            })
-            await User.updateOne({$push:{rented : books}})
-        }else{
-            res.status(400).json({
-                message:'You have already rented this book'
-            })
-        }
+        
+    if(isRented.length === 0){
+        await books.updateOne({$push:{rented : {email:User.email}}})
+        res.status(200).json({
+            message:'rent updated in book'
+        })
+        await User.updateOne({$push:{rented : books}})
+    }else{
+        res.status(400).json({
+            message:'You have already rented this book'
+        })
+    }
 })
 
 module.exports = {
