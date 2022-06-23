@@ -23,11 +23,10 @@ const bookSchema = mongoose.Schema({
     image :{
         data:Buffer,
         type:String,
-        required:true,
     },
     price : {
         type:Number,
-        required:true,
+
     },
     rented: {
         type:Array,

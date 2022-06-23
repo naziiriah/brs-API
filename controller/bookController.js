@@ -26,10 +26,10 @@ const myBooks = asyncHandler(async (req, res) => {
 
 const createBook = asyncHandler( async(req, res) => {
     
-    const {title,ISBN,price,author, }  = req.body
-    const image = req.file.filename
+    const {title,ISBN,price,author, image}  = req.body
     
-    if(!title || !ISBN || !author || !image ||!price ){
+    
+    if(!title || !ISBN || !author  ){
         res.status(400)
         throw new Error('Complete the form')
     }
@@ -127,7 +127,7 @@ const updateRentedStatus = asyncHandler (async(req, res) => {
     const User = req.user
     
         
-    const isRented = books.rented.filter(state => state.email === User.email)
+    const isRented =  books.rented.filter(state => state.email === User.email)
         
     if(isRented.length === 0){
         await books.updateOne({$push:{rented : {email:User.email}}})

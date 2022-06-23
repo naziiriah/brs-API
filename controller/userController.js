@@ -67,30 +67,48 @@ const loginUser = asyncHandler( async(req, res) =>{
 //  GET USER INFORMATION
 //  
 const userInfo = asyncHandler( async(req, res) => {
-    const { _id, email, name} = await user.findById((req.user.id))
+    const { _id, email, name, rented, profilePic } = req.user
 
     res.status(200).json({
         id:_id,
         email,
         name,
+        rented,
+        profilePic,
+        token: generateToken(req.user.id)
     })
 })
 
 const updateUser  = asyncHandler(async(req, res) => {
     const currentuser =  req.user
+    const { name, email, password} = req.body
 
-   try{
-       await user.findByIdAndUpdate(currentuser.id,req.body, {
-        new:true})
-        res.status(200).json({
-            message: 'account updated'
-        })
+       if(!name || !email || !password ){
+           res.status(400)
+           throw new Error('Input fields character correctly!!')
+       }
+
+       const salt = await bcrypt.genSalt(10)
+       const hashedpassword = await bcrypt.hash(password, salt)
+
+       const newUserInfo = {
+           name,
+           email,
+           password:hashedpassword,
+       }
+    try{
+        await user.findByIdAndUpdate(currentuser.id,newUserInfo, {
+            new:true})
+            res
+                .status(200)
+                .json({
+                    message: 'account updated'
+                    })
     }
     catch(error){
         res.status(403)
         throw new Error("You can't edit this account")
     }
-
 })
 
 const deleteUser = asyncHandler( async(req, res) => {
